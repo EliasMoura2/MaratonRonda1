@@ -156,7 +156,7 @@ def irALaDerecha():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
             if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j+1][i]==0):
+                if(zonaDeTransporte[j+1][i]==0):
                     posicionarElemento('jugador',j+1,i)
                     borrarElemento(j,i)
                     break
@@ -170,7 +170,7 @@ def irALaIzquierda():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
             if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j-1][i]==0):
+                if(zonaDeTransporte[j-1][i]==0):
                     posicionarElemento('jugador',j-1,i)
                     borrarElemento(j,i)
                     break
@@ -185,9 +185,8 @@ def irALaIzquierda():
 def irHaciaAbajo():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-            #contador=contador+1
-            if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j][i+1]==0):
+            if(zonaDeTransporte[j][i]=='jugador'):
+                if(zonaDeTransporte[j][i+1]==0):
                     posicionarElemento('jugador',j,i+1)
                     borrarElemento(j,i)
                     break
