@@ -10,8 +10,13 @@ import random
 #Inicializamos la librería Pygame y demás variables
 pygame.init()
 pygame.font.init() 
+<<<<<<< HEAD
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
 pantalla= pygame.display.set_mode((1152,648))
+=======
+pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1")
+pantalla= pygame.display.set_mode((1280,720)) #modificar por el tamanio del fondo que queramos poner, original=(1542,692)
+>>>>>>> mover_arriba
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
 
@@ -70,9 +75,9 @@ def dibujarZonaDeTransporte():
     for i in range(1,cantidadDeCasillasPorLado+1):
         for j in range(1,cantidadDeCasillasPorLado+1):
             if cnt % 2 == 0:
-                pygame.draw.rect(pantalla, colorVerde,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
+                pygame.draw.rect(pantalla, colorBlanco,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
             else:
-                pygame.draw.rect(pantalla, colorVerde, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
+                pygame.draw.rect(pantalla, colorBlanco, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
 
             if (hayZonaProtegidaEn(j,i)==True):
                 pantalla.blit(imgAreaProtegida, (cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i)) 
@@ -195,9 +200,25 @@ def irHaciaAbajo():
                     posicionarElemento('jugador',j,i+1)
                     break
 
+def irHaciaArriba():
+    for i in range(1,cantidadDeCasillasPorLado):
+        for j in range(1,cantidadDeCasillasPorLado):
+           contador=contador+1 
+           if (zonaDeTransporte[j][i]=='jugador'):
+                if (zonaDeTransporte[j][i-1]==0):
+                    posicionarElemento('jugador',j,i-1)
+                    borrarElemento(j,i)
+                    break
+                if(zonaDeTransporte[j][i-1]=='virus') and not ((zonaDeTransporte[j][i-2]=='pared') or (zonaDeTransporte[j][i-2]=='virus')):
+                    borrarElemento(j,i)
+                    posicionarElemento('virus',j,i-2)
+                    posicionarElemento('jugador',j,i-1)
+                    break
+                    
 #Cargamos la musica de fondo
 pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(2)
+
 
 #Creamos el bucle del juego
 while not salirJuego:
