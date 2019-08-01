@@ -10,13 +10,10 @@ import random
 #Inicializamos la librería Pygame y demás variables
 pygame.init()
 pygame.font.init() 
-<<<<<<< HEAD
+
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
 pantalla= pygame.display.set_mode((1152,648))
-=======
-pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1")
-pantalla= pygame.display.set_mode((1280,720)) #modificar por el tamanio del fondo que queramos poner, original=(1542,692)
->>>>>>> mover_arriba
+
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
 
@@ -188,7 +185,7 @@ def irALaIzquierda():
 def irHaciaAbajo():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-            contador=contador+1
+            #contador=contador+1
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i+1]==0):
                     posicionarElemento('jugador',j,i+1)
@@ -203,7 +200,7 @@ def irHaciaAbajo():
 def irHaciaArriba():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-           contador=contador+1 
+           #contador=contador+1 
            if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i-1]==0):
                     posicionarElemento('jugador',j,i-1)
@@ -230,6 +227,10 @@ while not salirJuego:
                 irALaDerecha()
             elif event.key == pygame.K_LEFT:
                 irALaIzquierda()
+            elif event.key == pygame.K_DOWN:
+                irHaciaAbajo()
+            elif event.key == pygame.K_UP:
+                irHaciaArriba()
         dibujarZonaDeTransporte()
         estaSolucionado()
 pygame.quit()
