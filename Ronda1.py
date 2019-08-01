@@ -184,17 +184,10 @@ def irALaIzquierda():
                     break
 
 def irHaciaAbajo():
-<<<<<<< HEAD
     for i in range(1,cantidadDeCirHaciaAbajo
         for j in range(1,cantidairHaciaAbajo
             #contador=contador+1irHaciaAbajo
             if (zonaDeTransporte[j][i]=='jugador'):
-=======
-    for j in range(1,cantidadDeCasillasPorLado):
-        for i in range(1,cantidadDeCasillasPorLado):
-           #contador=contador+1 
-           if (zonaDeTransporte[j][i]=='jugador'):
->>>>>>> mover_abajo
                 if (zonaDeTransporte[j][i+1]==0):
                     posicionarElemento('jugador',j,i+1)
                     borrarElemento(j,i)
