@@ -11,7 +11,7 @@ import random
 pygame.init()
 pygame.font.init() 
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1")
-pantalla= pygame.display.set_mode((1152,648))
+pantalla= pygame.display.set_mode((1280,720)) #modificar por el tamanio del fondo que queramos poner, original=(1542,692)
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
 
@@ -70,9 +70,9 @@ def dibujarZonaDeTransporte():
     for i in range(1,cantidadDeCasillasPorLado+1):
         for j in range(1,cantidadDeCasillasPorLado+1):
             if cnt % 2 == 0:
-                pygame.draw.rect(pantalla, colorVerde,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
+                pygame.draw.rect(pantalla, colorBlanco,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
             else:
-                pygame.draw.rect(pantalla, colorVerde, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
+                pygame.draw.rect(pantalla, colorBlanco, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
 
             if (hayZonaProtegidaEn(j,i)==True):
                 pantalla.blit(imgAreaProtegida, (cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i)) 
