@@ -185,7 +185,7 @@ def irALaIzquierda():
 def irHaciaAbajo():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-            contador=contador+1
+            #contador=contador+1
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i+1]==0):
                     posicionarElemento('jugador',j,i+1)
@@ -207,6 +207,8 @@ while not salirJuego:
                 irALaDerecha()
             elif event.key == pygame.K_LEFT:
                 irALaIzquierda()
+            elif event.key == pygame.K_DOWN:
+                irHaciaAbajo()
         dibujarZonaDeTransporte()
         estaSolucionado()
 pygame.quit()
