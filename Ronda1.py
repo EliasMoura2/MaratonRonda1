@@ -12,7 +12,7 @@ pygame.init()
 pygame.font.init() 
 
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
-pantalla= pygame.display.set_mode((1152,648))
+pantalla= pygame.display.set_mode((1280,720)) #modifica el tamanio de la pantalla para el fondo
 
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
@@ -184,8 +184,8 @@ def irALaIzquierda():
                     break
 
 def irHaciaAbajo():
-    for i in range(1,cantidadDeCirHaciaAbajo
-        for j in range(1,cantidairHaciaAbajo
+    for j in range(1,cantidadDeCasillasPorLado):
+        for i in range(1,cantidadDeCasillasPorLado):
             #contador=contador+1irHaciaAbajo
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i+1]==0):
@@ -199,8 +199,8 @@ def irHaciaAbajo():
                     break
 
 def irHaciaArriba():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
+    for j in range(1,cantidadDeCasillasPorLado):
+        for i in range(1,cantidadDeCasillasPorLado):
            #contador=contador+1 
            if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i-1]==0):
