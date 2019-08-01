@@ -180,12 +180,24 @@ def irALaIzquierda():
                     posicionarElemento('jugador',j-1,i)
                     break
 
-
+def irHaciaAbajo():
+    for i in range(1,cantidadDeCasillasPorLado):
+        for j in range(1,cantidadDeCasillasPorLado):
+            contador=contador+1
+            if (zonaDeTransporte[j][i]=='jugador'):
+                if (zonaDeTransporte[j][i+1]==0):
+                    posicionarElemento('jugador',j,i+1)
+                    borrarElemento(j,i)
+                    break
+                if(zonaDeTransporte[j][i+1]=='virus') and not ((zonaDeTransporte[j][i+2]=='pared') or (zonaDeTransporte[j][i+2]=='virus')):
+                    borrarElemento(j,i)
+                    posicionarElemento('virus',j,i+2)
+                    posicionarElemento('jugador',j,i+1)
+                    break
 
 #Cargamos la musica de fondo
 pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(2)
-
 
 #Creamos el bucle del juego
 while not salirJuego:
