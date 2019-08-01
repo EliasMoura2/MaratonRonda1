@@ -181,6 +181,7 @@ def irALaIzquierda():
                     break
 
 
+
 def irHaciaAbajo():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
