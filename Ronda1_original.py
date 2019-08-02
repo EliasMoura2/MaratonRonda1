@@ -10,16 +10,18 @@ import random
 #Inicializamos la librería Pygame y demás variables
 pygame.init()
 pygame.font.init() 
-pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 ((By EFA ALEM))")
+pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
 pantalla= pygame.display.set_mode((1152,648))
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
+
 global nivelCompletado
 colorVerde,colorAzul,colorBlanco,colorNegro, colorNaranja= (11,102,35),(0,0,255),(255,255,255),(0,0,0),(239,27,126)
 cantidadDeCasillasPorLado=8 #Debe ser número par ya que la zona es un cuadrado
 cantPixelesPorLadoCasilla=72
 salirJuego = False
 lstZonasProtegidas=[]
+
 #Cargamos las imágenes
 imgSuperTablet=pygame.image.load("supertablet.png")
 imgPared=pygame.image.load("pared.png")
@@ -46,7 +48,7 @@ def crearZonaDeTransporte():
     zonaDeTransporte[3][4] = 'jugador'
     zonaDeTransporte[5][4] = 'virus'      
     
-    lstZonasProtegidas.append((7,2))
+    lstZonasProtegidas.append((7,4))
 
     return zonaDeTransporte
 
@@ -102,30 +104,6 @@ def dibujarReglas():
     pantalla.blit(textoReglas,(x+5,y,ancho,alto))
     pygame.display.update()
 
-#creamos el contador
-contador=0
-
-def contadorMov(): 
-    textoContador = tipografia.render(('Movimientos: '+str(contador)), False, colorBlanco)
-    
-    ancho=0
-    alto=0
-    x=150
-    y=150
-    pygame.draw.rect(pantalla,colorAzul,(x,y,ancho,alto))
-    pantalla.blit(textoContador,(x+5,y,ancho,alto))
-    pygame.display.update()
-    
-def LOGO(): 
-    textologo = tipografia.render(' EFA Santa Teresita ', False,colorBlanco)
-
-    ancho=0
-    alto=0
-    x=660
-    y=400
-    pygame.draw.rect(pantalla,False,(x,y,ancho,alto))
-    pantalla.blit(textologo,(x+5,y,ancho,alto))
-    pygame.display.update()
 
 def dibujarFelicitacion():
     global nivelCompletado
@@ -150,8 +128,7 @@ def dibujarTodo():
     dibujarZonaDeTransporte()
     dibujarReglas()
     pygame.display.update()
-    contadorMov()
-    LOGO()
+
 dibujarTodo()
 
 #Creamos una operación que indique si el nivel fue solucionado
@@ -164,7 +141,7 @@ def estaSolucionado():
         x=punto[0]
         y=punto[1]
         if zonaDeTransporte[x][y]=='virus':
-            cantvirusesSobreTomas=cantvirusesSobreTomas+1
+            cantvirusesSobreTomas=cantvirusesSobreTomas+1       
 
     if (cantvirusesSobreTomas==len(lstZonasProtegidas)):
         nivelCompletado=True
@@ -174,41 +151,10 @@ def estaSolucionado():
     dibujarFelicitacion()
     dibujarReglas()
 
-#Creamos operaciones para mover a Super Tablet:
-def irHaciaAbajo():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
-            contador=contador+1
-            if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j][i+1]==0):
-                    posicionarElemento('jugador',j,i+1)
-                    borrarElemento(j,i)
-                    break
-                if(zonaDeTransporte[j][i+1]=='virus') and not ((zonaDeTransporte[j][i+2]=='pared') or (zonaDeTransporte[j][i+2]=='virus')):
-                    borrarElemento(j,i)
-                    posicionarElemento('virus',j,i+2)
-                    posicionarElemento('jugador',j,i+1)
-                    break
-
-def irHaciaArriba():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
-           contador=contador+1 
-           if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j][i-1]==0):
-                    posicionarElemento('jugador',j,i-1)
-                    borrarElemento(j,i)
-                    break
-                if(zonaDeTransporte[j][i-1]=='virus') and not ((zonaDeTransporte[j][i-2]=='pared') or (zonaDeTransporte[j][i-2]=='virus')):
-                    borrarElemento(j,i)
-                    posicionarElemento('virus',j,i-2)
-                    posicionarElemento('jugador',j,i-1)
-                    break
-
+#Creamos operaciones para mover a Super Tablet
 def irALaDerecha():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-            contador=contador+1
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j+1][i]==0):
                     posicionarElemento('jugador',j+1,i)
@@ -223,7 +169,6 @@ def irALaDerecha():
 def irALaIzquierda():
     for i in range(1,cantidadDeCasillasPorLado):
         for j in range(1,cantidadDeCasillasPorLado):
-            contador=contador+1
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j-1][i]==0):
                     posicionarElemento('jugador',j-1,i)
@@ -235,9 +180,12 @@ def irALaIzquierda():
                     posicionarElemento('jugador',j-1,i)
                     break
 
-#Cargamos la musica ambiental
-pygame.mixer.music.load("ambiental.mp3")
+
+
+#Cargamos la musica de fondo
+pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(2)
+
 
 #Creamos el bucle del juego
 while not salirJuego:
@@ -247,13 +195,8 @@ while not salirJuego:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 irALaDerecha()
-            elif event.key == pygame.K_W:
-                irHaciaArriba()
-            elif event.key == pygame.K_DOWN:
-                irHaciaAbajo()
             elif event.key == pygame.K_LEFT:
                 irALaIzquierda()
-                
         dibujarZonaDeTransporte()
         estaSolucionado()
 pygame.quit()

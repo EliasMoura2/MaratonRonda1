@@ -10,8 +10,10 @@ import random
 #Inicializamos la librería Pygame y demás variables
 pygame.init()
 pygame.font.init() 
-pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1")
-pantalla= pygame.display.set_mode((1152,648))
+
+pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
+pantalla= pygame.display.set_mode((1280,720)) #modifica el tamanio de la pantalla para el fondo (1280,720)
+
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
 
@@ -70,9 +72,9 @@ def dibujarZonaDeTransporte():
     for i in range(1,cantidadDeCasillasPorLado+1):
         for j in range(1,cantidadDeCasillasPorLado+1):
             if cnt % 2 == 0:
-                pygame.draw.rect(pantalla, colorVerde,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
+                pygame.draw.rect(pantalla, colorBlanco,[cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])
             else:
-                pygame.draw.rect(pantalla, colorVerde, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
+                pygame.draw.rect(pantalla, colorBlanco, [cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i,cantPixelesPorLadoCasilla,cantPixelesPorLadoCasilla])        
 
             if (hayZonaProtegidaEn(j,i)==True):
                 pantalla.blit(imgAreaProtegida, (cantPixelesPorLadoCasilla*j,cantPixelesPorLadoCasilla*i)) 
@@ -104,10 +106,8 @@ def dibujarReglas():
     pantalla.blit(textoReglas,(x+5,y,ancho,alto))
     pygame.display.update()
 
-
 def dibujarFelicitacion():
     global nivelCompletado
-
     x=50
     y=3
     ancho=240
@@ -152,11 +152,12 @@ def estaSolucionado():
     dibujarReglas()
 
 #Creamos operaciones para mover a Super Tablet
+
 def irALaDerecha():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
+    for i in range(1,cantidadDeCasillasPorLado):  # 1ro un for de i
+        for j in range(1,cantidadDeCasillasPorLado): # 2do un for de j
             if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j+1][i]==0):
+                if(zonaDeTransporte[j+1][i]==0):
                     posicionarElemento('jugador',j+1,i)
                     borrarElemento(j,i)
                     break
@@ -167,10 +168,10 @@ def irALaDerecha():
                     break
 
 def irALaIzquierda():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
+    for i in range(1,cantidadDeCasillasPorLado): # 1ro un for de i
+        for j in range(1,cantidadDeCasillasPorLado): # 2do un for de j
             if (zonaDeTransporte[j][i]=='jugador'):
-                if (zonaDeTransporte[j-1][i]==0):
+                if(zonaDeTransporte[j-1][i]==0):
                     posicionarElemento('jugador',j-1,i)
                     borrarElemento(j,i)
                     break
@@ -179,17 +180,55 @@ def irALaIzquierda():
                     posicionarElemento('virus',j-2,i)
                     posicionarElemento('jugador',j-1,i)
                     break
+
+def irHaciaAbajo(): #Se cambio el orden de los for 
+    for j in range(1,cantidadDeCasillasPorLado): # 1ro un for de j
+        for i in range(1,cantidadDeCasillasPorLado): # 2do un for de i
+            if (zonaDeTransporte[j][i]=='jugador'):
+                if (zonaDeTransporte[j][i+1]==0):
+                    posicionarElemento('jugador',j,i+1)
+                    borrarElemento(j,i)
+                    break
+                if(zonaDeTransporte[j][i+1]=='virus') and not ((zonaDeTransporte[j][i+2]=='pared') or (zonaDeTransporte[j][i+2]=='virus')):
+                    borrarElemento(j,i)
+                    posicionarElemento('virus',j,i+2)
+                    posicionarElemento('jugador',j,i+1)
+                    break
+
+def irHaciaArriba(): #Se cambio el orden de los for
+    for j in range(1,cantidadDeCasillasPorLado): # 1ro un for de j
+        for i in range(1,cantidadDeCasillasPorLado): # 2do un for de i
+           if (zonaDeTransporte[j][i]=='jugador'):
+                if (zonaDeTransporte[j][i-1]==0):
+                    posicionarElemento('jugador',j,i-1)
+                    borrarElemento(j,i)
+                    break
+                if(zonaDeTransporte[j][i-1]=='virus') and not ((zonaDeTransporte[j][i-2]=='pared') or (zonaDeTransporte[j][i-2]=='virus')):
+                    borrarElemento(j,i)
+                    posicionarElemento('virus',j,i-2)
+                    posicionarElemento('jugador',j,i-1)
+                    break
                     
+#Cargamos la musica de fondo
+pygame.mixer.music.load("musica.mp3")
+pygame.mixer.music.play(2)
+
+
 #Creamos el bucle del juego
 while not salirJuego:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             salirJuego = True
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
+        if event.type == pygame.KEYDOWN: # si se presiona alguna tecla se fija que tecla es la precionada
+            if event.key == pygame.K_RIGHT: # si se presiona la flecha de derecha se llama a la funcion llamar irALaDerecha()
                 irALaDerecha()
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT: # si se presiona la flecha de izquierda se llama a la funcion llamar irALaIzquierda()
                 irALaIzquierda()
+            elif event.key == pygame.K_DOWN: # si se presiona la flecha de arriba se llama a la funcion llamar irHaciaArriba()
+                irHaciaAbajo()
+            elif event.key == pygame.K_UP: # si se presiona la flecha de abajo se llama a la funcion llamar  irHaciaArriba()
+                irHaciaArriba()
+
         dibujarZonaDeTransporte()
         estaSolucionado()
 pygame.quit()
