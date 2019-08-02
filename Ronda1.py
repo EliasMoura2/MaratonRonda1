@@ -12,7 +12,7 @@ pygame.init()
 pygame.font.init() 
 
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
-pantalla= pygame.display.set_mode((1280,720)) #modifica el tamanio de la pantalla para el fondo
+pantalla= pygame.display.set_mode((1280,720)) #modifica el tamanio de la pantalla para el fondo (1280,720)
 
 tipografia = pygame.font.SysFont('Comic Sans MS', 18)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
@@ -106,10 +106,8 @@ def dibujarReglas():
     pantalla.blit(textoReglas,(x+5,y,ancho,alto))
     pygame.display.update()
 
-
 def dibujarFelicitacion():
     global nivelCompletado
-
     x=50
     y=3
     ancho=240
@@ -156,8 +154,8 @@ def estaSolucionado():
 #Creamos operaciones para mover a Super Tablet
 
 def irALaDerecha():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
+    for i in range(1,cantidadDeCasillasPorLado):  # 1ro un for de i
+        for j in range(1,cantidadDeCasillasPorLado): # 2do un for de j
             if (zonaDeTransporte[j][i]=='jugador'):
                 if(zonaDeTransporte[j+1][i]==0):
                     posicionarElemento('jugador',j+1,i)
@@ -170,8 +168,8 @@ def irALaDerecha():
                     break
 
 def irALaIzquierda():
-    for i in range(1,cantidadDeCasillasPorLado):
-        for j in range(1,cantidadDeCasillasPorLado):
+    for i in range(1,cantidadDeCasillasPorLado): # 1ro un for de i
+        for j in range(1,cantidadDeCasillasPorLado): # 2do un for de j
             if (zonaDeTransporte[j][i]=='jugador'):
                 if(zonaDeTransporte[j-1][i]==0):
                     posicionarElemento('jugador',j-1,i)
@@ -183,10 +181,9 @@ def irALaIzquierda():
                     posicionarElemento('jugador',j-1,i)
                     break
 
-def irHaciaAbajo():
-    for j in range(1,cantidadDeCasillasPorLado):
-        for i in range(1,cantidadDeCasillasPorLado):
-            #contador=contador+1irHaciaAbajo
+def irHaciaAbajo(): #Se cambio el orden de los for 
+    for j in range(1,cantidadDeCasillasPorLado): # 1ro un for de j
+        for i in range(1,cantidadDeCasillasPorLado): # 2do un for de i
             if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i+1]==0):
                     posicionarElemento('jugador',j,i+1)
@@ -198,10 +195,9 @@ def irHaciaAbajo():
                     posicionarElemento('jugador',j,i+1)
                     break
 
-def irHaciaArriba():
-    for j in range(1,cantidadDeCasillasPorLado):
-        for i in range(1,cantidadDeCasillasPorLado):
-           #contador=contador+1 
+def irHaciaArriba(): #Se cambio el orden de los for
+    for j in range(1,cantidadDeCasillasPorLado): # 1ro un for de j
+        for i in range(1,cantidadDeCasillasPorLado): # 2do un for de i
            if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i-1]==0):
                     posicionarElemento('jugador',j,i-1)
@@ -223,15 +219,16 @@ while not salirJuego:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             salirJuego = True
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
+        if event.type == pygame.KEYDOWN: # si se presiona alguna tecla se fija que tecla es la precionada
+            if event.key == pygame.K_RIGHT: # si se presiona la flecha de derecha se llama a la funcion llamar irALaDerecha()
                 irALaDerecha()
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT: # si se presiona la flecha de izquierda se llama a la funcion llamar irALaIzquierda()
                 irALaIzquierda()
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN: # si se presiona la flecha de arriba se llama a la funcion llamar irHaciaArriba()
                 irHaciaAbajo()
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP: # si se presiona la flecha de abajo se llama a la funcion llamar  irHaciaArriba()
                 irHaciaArriba()
+
         dibujarZonaDeTransporte()
         estaSolucionado()
 pygame.quit()
