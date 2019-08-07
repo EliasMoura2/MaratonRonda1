@@ -14,13 +14,14 @@ pygame.font.init()
 pygame.display.set_caption("Maraton 2019 - Inicio Ronda 1 (CEP 57)")
 pantalla= pygame.display.set_mode((1280,720)) #modifica el tamanio de la pantalla para el fondo (1280,720)
 
-tipografia = pygame.font.SysFont('Comic Sans MS', 18)
+tipografia = pygame.font.SysFont('Comic Sans MS', 20)
 tipografiaGanaste=pygame.font.SysFont('Comic Sans MS', 26)
 
 global nivelCompletado
 colorVerde,colorAzul,colorBlanco,colorNegro, colorNaranja= (11,102,35),(0,0,255),(255,255,255),(0,0,0),(239,27,126)
 cantidadDeCasillasPorLado=8 #Debe ser número par ya que la zona es un cuadrado
 cantPixelesPorLadoCasilla=72
+contador=0 #contador global para los movimientos
 salirJuego = False
 lstZonasProtegidas=[]
 
@@ -97,7 +98,6 @@ def dibujarFondo():
 def dibujarReglas():
 
     textoReglas = tipografia.render('Mover a Super Tablet con las flechas del teclado para que lleve los virus a las zonas protegidas.', False, colorBlanco)
-    
     ancho=800
     alto=46
     x=350
@@ -106,16 +106,24 @@ def dibujarReglas():
     pantalla.blit(textoReglas,(x+5,y,ancho,alto))
     pygame.display.update()
 
+def contadorMov(): 
+    textoContador = tipografia.render(('Movimientos: '+str(contador)), False, colorNegro)
+    ancho=0
+    alto=0
+    x=150
+    y=150
+    pygame.draw.rect(pantalla,colorAzul,(x,y,ancho,alto))
+    pantalla.blit(textoContador,(x+5,y,ancho,alto))
+    pygame.display.update()
+
 def dibujarFelicitacion():
     global nivelCompletado
-    x=50
-    y=3
     ancho=240
     alto=46
-    
+    x=50
+    y=3    
     if (nivelCompletado==True):
         textoFelicitacion = tipografiaGanaste.render('GANASTE :)', False, colorBlanco)
-    
     else:
         textoFelicitacion = tipografiaGanaste.render('Juego en curso', False, colorBlanco)
     
@@ -128,31 +136,27 @@ def dibujarTodo():
     dibujarZonaDeTransporte()
     dibujarReglas()
     pygame.display.update()
-
+    contadorMov()  #funcion para mostrar el numero de movimiento
 dibujarTodo()
 
 #Creamos una operación que indique si el nivel fue solucionado
 def estaSolucionado():
     global nivelCompletado
-
     cantvirusesSobreTomas=0
-
     for punto in lstZonasProtegidas:
         x=punto[0]
         y=punto[1]
         if zonaDeTransporte[x][y]=='virus':
             cantvirusesSobreTomas=cantvirusesSobreTomas+1       
-
     if (cantvirusesSobreTomas==len(lstZonasProtegidas)):
         nivelCompletado=True
     else:
         nivelCompletado=False
-
     dibujarFelicitacion()
     dibujarReglas()
+    contadorMov() #se muestra el cuadro donde se ven los movimientos
 
 #Creamos operaciones para mover a Super Tablet
-
 def irALaDerecha():
     for i in range(1,cantidadDeCasillasPorLado):  # 1ro un for de i
         for j in range(1,cantidadDeCasillasPorLado): # 2do un for de j
@@ -198,7 +202,7 @@ def irHaciaAbajo(): #Se cambio el orden de los for
 def irHaciaArriba(): #Se cambio el orden de los for
     for j in range(1,cantidadDeCasillasPorLado): # 1ro un for de j
         for i in range(1,cantidadDeCasillasPorLado): # 2do un for de i
-           if (zonaDeTransporte[j][i]=='jugador'):
+            if (zonaDeTransporte[j][i]=='jugador'):
                 if (zonaDeTransporte[j][i-1]==0):
                     posicionarElemento('jugador',j,i-1)
                     borrarElemento(j,i)
@@ -213,21 +217,28 @@ def irHaciaArriba(): #Se cambio el orden de los for
 pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(2)
 
-
 #Creamos el bucle del juego
 while not salirJuego:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             salirJuego = True
         if event.type == pygame.KEYDOWN: # si se presiona alguna tecla se fija que tecla es la precionada
+
             if event.key == pygame.K_RIGHT: # si se presiona la flecha de derecha se llama a la funcion llamar irALaDerecha()
                 irALaDerecha()
-            elif event.key == pygame.K_LEFT: # si se presiona la flecha de izquierda se llama a la funcion llamar irALaIzquierda()
+                contador=contador+1 #Al precionar la flecha derecha se aumenta en 1 el contador
+
+            elif event.key == pygame.K_LEFT: # si se presiona la flecha izquierda se llama a la funcion llamar irALaIzquierda()
                 irALaIzquierda()
-            elif event.key == pygame.K_DOWN: # si se presiona la flecha de arriba se llama a la funcion llamar irHaciaArriba()
+                contador=contador+1 #Al precionar la flecha izquierda se aumenta en 1 el contador
+
+            elif event.key == pygame.K_DOWN: # si se presiona la flecha arriba se llama a la funcion llamar irHaciaArriba()
                 irHaciaAbajo()
-            elif event.key == pygame.K_UP: # si se presiona la flecha de abajo se llama a la funcion llamar  irHaciaArriba()
+                contador=contador+1 #Al precionar la flecha arriba se aumenta en 1 el contador
+
+            elif event.key == pygame.K_UP: # si se presiona la flecha abajo se llama a la funcion llamar  irHaciaArriba()
                 irHaciaArriba()
+                contador=contador+1 #Al precionar la flecha abajo se aumenta en 1 el contador
 
         dibujarZonaDeTransporte()
         estaSolucionado()
